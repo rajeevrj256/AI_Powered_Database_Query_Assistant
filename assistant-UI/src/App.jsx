@@ -4,7 +4,7 @@ export default function DatabaseUI() {
   const [formData, setFormData] = useState({
     user: "",
     port: "5432",
-    password: "Ranjan256@&!",
+    password: "@!",
     host: "",
     database: "",
   });
