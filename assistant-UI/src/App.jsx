@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-
+import Table from "./components/query_execute/Table";
 export default function DatabaseUI() {
   const [formData, setFormData] = useState({
     user: "",
     port: "5432",
-    password: "@!",
+    password: "",
     host: "",
     database: "",
   });
@@ -13,11 +13,14 @@ export default function DatabaseUI() {
   const [conn, setConn] = useState("");
   const [tables, setTables] = useState(["Select a table"]);
   const [tableSelect, setTableSelect] = useState("null");
-
+  const [querygenerated, setQueryGenerated] = useState(false);
+  const[query,setQuery]=useState("");
   const [columns, setColumns] = useState([]);
+
   const [messages, setMessages] = useState([
     { sender: "bot", text: "Hello! How can I assist you with your database queries?" },
     { sender: "user", text: "Please select a database to connect to." }
+    
   ]);
   
   
@@ -131,6 +134,9 @@ export default function DatabaseUI() {
       });
       const data = await response.json();
       if (data.status === "success") {
+        setQueryGenerated(true);
+        setQuery(data.result.SQL_query);
+
         setMessages((prevMessages) => [
           ...prevMessages,
           { sender: "bot", text: data.result.SQL_query},
@@ -146,10 +152,15 @@ export default function DatabaseUI() {
 
   }
   
-
+  
+  
   useEffect(() => {
     handleTable();
-  }, [isconnected]);  
+  }, [isconnected]);
+
+  
+  
+
 
 
   return (
@@ -284,7 +295,18 @@ export default function DatabaseUI() {
           </div>
         )}
       </div>
-    </div>
+      {/* Table Results */}
+      {querygenerated && (
+          <div className="mt-4">
+            <Table 
+              conn={conn} 
+              query={query} 
+              isconnected={isconnected} 
+            />
+          </div>
+        )}
+      </div>
+   
   );
 }
 
