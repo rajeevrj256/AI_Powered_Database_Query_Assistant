@@ -17,7 +17,7 @@ export default function DatabaseUI() {
   const [selectDatabase, setSelectDatabase] = useState(database[0]);
   const [validDatabase, setValidDatabase] = useState(false);
   const datbaseBaseUrl = {
-    PostgreSQL: "http://65.0.5.182:5000/postgresql",
+    PostgreSQL: "https://database-manager-with-postgresql.onrender.com/postgresql",
     MySQL: "",
     Oracle: "",
   };
