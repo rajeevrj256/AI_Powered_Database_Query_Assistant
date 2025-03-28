@@ -13,7 +13,7 @@ export default function DatabaseUI() {
     host: "",
     database: "",
   });
-  const database = ["Select Database ","PostgreSQL", "MySQL", "Oracle"];
+  const database = ["Select Database ", "PostgreSQL", "MySQL", "Oracle"];
   const [selectDatabase, setSelectDatabase] = useState(database[0]);
   const [validDatabase, setValidDatabase] = useState(false);
   const datbaseBaseUrl = {
@@ -22,7 +22,7 @@ export default function DatabaseUI() {
     Oracle: "",
   };
   const [baseUrl, setBaseUrl] = useState("");
- 
+
   const [isconnected, setIsConnected] = useState(false);
   const [conn, setConn] = useState("");
   const [tables, setTables] = useState(["Select a table"]);
@@ -41,7 +41,7 @@ export default function DatabaseUI() {
 
   const [newMessage, setNewMessage] = useState("");
   const [copiedStates, setCopiedStates] = useState(messages.map(() => false));
-  
+
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -64,7 +64,7 @@ export default function DatabaseUI() {
   };
 
   const handlebaseUrl = (selectDatabase) => {
-    if(selectDatabase === "Select Database "){
+    if (selectDatabase === "Select Database ") {
       setValidDatabase(false);
       return;
     }
@@ -74,12 +74,12 @@ export default function DatabaseUI() {
     console.log(newBaseUrl);
   };
 
-  
+
 
   const handleConnect = async () => {
     try {
 
-      if(!validDatabase){
+      if (!validDatabase) {
         toast.error("Please select a valid database");
         return;
       }
@@ -92,19 +92,21 @@ export default function DatabaseUI() {
       });
 
       const data = await response.json();
-      if(data["status"]==="success"){
+      if (data["status"] === "success") {
 
         setConn(data["conn_pool"]);
         setIsConnected(true);
-        toast.success("Connected to the database",{position: "top-right",
+        toast.success("Connected to the database", {
+          position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "colored",});
-      }else{
+          theme: "colored",
+        });
+      } else {
         toast.error(data["message"]);
       }
     } catch (error) {
@@ -127,14 +129,16 @@ export default function DatabaseUI() {
         setConn("");
         setTables([]);
         setColumns([]);
-        toast.success("Disconnected from the database",{position: "top-right",
+        toast.success("Disconnected from the database", {
+          position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "colored",});
+          theme: "colored",
+        });
       } else {
         toast.warn(data["message"]);
       }
@@ -169,7 +173,7 @@ export default function DatabaseUI() {
   };
 
   const handleTableChange = async (e) => {
-    
+
     setTableSelect(e.target.value);
     try {
       const response = await fetch(`${baseUrl}/columns`, {
@@ -313,9 +317,8 @@ export default function DatabaseUI() {
           </button>
         ) : (
           <button
-            className={`w-full p-2 rounded-md ${
-              isconnected ? "bg-red-600 hover:bg-red-700" : "bg-blue-600 hover:bg-blue-700"
-            }`}
+            className={`w-full p-2 rounded-md ${isconnected ? "bg-red-600 hover:bg-red-700" : "bg-blue-600 hover:bg-blue-700"
+              }`}
             onClick={() => {
               if (isconnected) {
                 handleDisconnect();
@@ -364,7 +367,7 @@ export default function DatabaseUI() {
             ⚠️ Please connect to the database.
           </div>
         ) : (
-          <div className="h-[750px] bg-gray-800 border border-gray-600 rounded-md flex flex-col p-4">
+          <div className="h-[540px] bg-gray-800 border border-gray-600 rounded-md flex flex-col p-4">
             <div className="flex-1 overflow-y-auto space-y-2 mb-4">
               {messages.map((msg, index) => {
                 const textLength = msg.text.length;
@@ -373,11 +376,10 @@ export default function DatabaseUI() {
                 return (
                   <div
                     key={index}
-                    className={`p-2 rounded-md ${
-                      msg.sender === "user"
+                    className={`p-2 rounded-md ${msg.sender === "user"
                         ? "bg-blue-700 ml-auto text-right"
                         : "bg-gray-700"
-                    }`}
+                      }`}
                     style={{
                       maxWidth: msg.sender === "user" ? `${userMessageWidth}px` : "55%",
                       wordWrap: "break-word",
@@ -406,7 +408,7 @@ export default function DatabaseUI() {
                           isConnected={isconnected}
                           baseUrl={baseUrl}
                         />
-                       
+
                       </div>
                     )}
                   </div>
@@ -414,7 +416,7 @@ export default function DatabaseUI() {
               })}
             </div>
 
-            <div className="flex items-center border-t border-gray-600 pt-3">
+            <div className="sticky bottom-0 bg-gray-800 border-t border-gray-600 p-3 flex items-center">
               <input
                 type="text"
                 placeholder="Type your SQL query..."
@@ -437,7 +439,7 @@ export default function DatabaseUI() {
           </div>
         )}
       </div>
-      
+
     </div>
   );
 }
